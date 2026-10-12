@@ -1,0 +1,12 @@
+[Unit]
+Description=Login Capture
+After=systemd-journald.service
+
+[Service]
+ExecStart=/opt/LoginCapture/.venv/bin/python3.12 /opt/LoginCapture/journal.py
+WorkingDirectory=/opt/LoginCapture
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
