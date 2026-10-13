@@ -12,6 +12,7 @@ Tested:  Fedora (GNOME)
 Note: Intended for use on personal devices only.
 
 Feel free to modify and report any issues.
+
 """
 
 import subprocess as sp
@@ -31,6 +32,7 @@ photo_dir_path.mkdir(parents=True, exist_ok=True)
 
 # Loop exists when flag is false
 while not flag:
+
     try:
         with sp.Popen(cmd,
                         stdout=sp.PIPE,
@@ -41,12 +43,13 @@ while not flag:
             for line in process.stdout:
                 line=line.lower().strip() # Converts the line to lowercase and removes all whitespaces
 
+                # Checks if the password is incorrect or not
                 if(all(check in line for check in String_fail)):
                     cam=cv.VideoCapture(0)
                     current_time=time.strftime("%d-%m-%Y_%H-%M-%S")
                     print("Incorrect password entered")
                     
-
+                    # Try block to capture image
                     try:
                         for j in range(25): # Captures 25 frames to adjust to lighting conditions
                             ret, img=cam.read()
@@ -61,7 +64,10 @@ while not flag:
                     except Exception as e:
                         print(f"\nError: {e}")
 
-                # Exits everything if password is correctWait
+                    finally:
+                        cam.release()
+
+                # Exits everything if password is correct
                 elif(all(check in line for check in String_success)or all(check2 in line for check2 in String_lockscreen_unlock)):
                     print("\n\nImage captured successfully to Pictures/Login Capture\n\n")
                     cam.release()
